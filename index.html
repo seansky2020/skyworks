@@ -1,0 +1,147 @@
+index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCG Markets Customer Service Chatbot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #chat-box {
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        .message-input {
+            display: flex;
+            margin-top: 10px;
+        }
+        #user-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #submit-btn {
+            padding: 10px 20px;
+            background-color: #f0ad4e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .action-btn {
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            flex-grow: 1;
+            margin: 0 5px;
+            text-align: center;
+        }
+        .examples {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 10px;
+        }
+        .example-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            padding: 5px 10px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>RCG Markets Customer Service Chatbot</h1>
+    <p class="welcome-message">Welcome to the RCG Markets customer service simulation. You are a frustrated customer testing our representatives.</p>
+    <div id="chat-box"></div>
+    <div class="action-buttons">
+        <div class="action-btn" onclick="retryLastMessage()">↺ Retry</div>
+        <div class="action-btn" onclick="undoLastMessage()">↩ Undo</div>
+        <div class="action-btn" onclick="clearChat()">🗑 Clear</div>
+    </div>
+    <div class="message-input">
+        <input type="text" id="user-input" placeholder="Type a message...">
+        <button id="submit-btn" onclick="sendMessage()">Submit</button>
+    </div>
+    <div class="examples">
+        <div class="example-btn" onclick="useExample(this)">Good Day how can I help you?</div>
+        <div class="example-btn" onclick="useExample(this)">Hello how can I help you today?</div>
+        <div class="example-btn" onclick="useExample(this)">Good Day how can I assist you?</div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            var userInput = $('#user-input').val();
+            if (userInput.trim() === '') return;
+
+            $('#chat-box').append('<p><strong>You:</strong> ' + userInput + '</p>');
+            $('#user-input').val('');
+
+            $.ajax({
+                url: '/chat',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({message: userInput}),
+                success: function(response) {
+                    $('#chat-box').append('<p><strong>Agent:</strong> ' + response.response + '</p>');
+                    $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+                }
+            });
+        }
+
+        $('#user-input').keypress(function(e) {
+            if (e.which == 13) {
+                sendMessage();
+                return false;
+            }
+        });
+
+        function retryLastMessage() {
+            // Implement retry functionality
+        }
+
+        function undoLastMessage() {
+            // Implement undo functionality
+        }
+
+        function clearChat() {
+            $('#chat-box').empty();
+        }
+
+        function useExample(element) {
+            $('#user-input').val($(element).text());
+        }
+    </script>
+</body>
+</html>
