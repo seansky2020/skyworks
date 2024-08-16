@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, jsonify
+
 from groq import Groq
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
