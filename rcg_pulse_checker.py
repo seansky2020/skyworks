@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
 from groq import Groq
 from google.oauth2 import service_account
@@ -7,14 +8,16 @@ import datetime
 import threading
 import time
 
+load_dotenv()  # Load environment variables from .env file
+
 app = Flask(__name__)
 
-# Groq API setup
-groq_client = Groq(api_key='your_new_api_key')
+# Groq API setup using environment variable
+groq_client = Groq(api_key=os.getenv('GROQ_API_KEY'))
 
-# Google Sheets setup
+# Google Sheets setup using environment variable
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-SERVICE_ACCOUNT_FILE = r'C:\Users\Mpho\RCG-Pulse-Checker\rcg-pulse-checker-cb096b2d7074.json'
+SERVICE_ACCOUNT_FILE = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 SPREADSHEET_ID = '1TzEMCPgvZnVs05ERyakO37BsAiOjomIvHeSdPZoczOc'
 
 creds = service_account.Credentials.from_service_account_file(
@@ -103,4 +106,4 @@ def chat():
 if __name__ == "__main__":
     timeout_thread = threading.Thread(target=check_timeout)
     timeout_thread.start()
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
