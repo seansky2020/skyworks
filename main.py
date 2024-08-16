@@ -1,3 +1,4 @@
+from flask import Flask, request, jsonify, render_template
 import os
 from dotenv import load_dotenv
 
@@ -9,6 +10,7 @@ import threading
 import time
 
 load_dotenv()  # Load environment variables from .env file
+print("GOOGLE_APPLICATION_CREDENTIALS:", os.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
 
 app = Flask(__name__)
 
