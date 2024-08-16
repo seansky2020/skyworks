@@ -38,16 +38,23 @@ last_activity_time = time.time()
 conversation_ended = False
 
 def get_ai_response(messages):
-    completion = groq_client.chat.completions.create(
-        model="llama-3.1-70b-versatile",
-        messages=messages,
-        temperature=1,
-        max_tokens=1024,
-        top_p=1,
-        stream=False,
-        stop=None,
-    )
-    return completion.choices[0].message.content
+    print("Sending messages to Groq:", messages)  # Debugging line
+    try:
+        completion = groq_client.chat.completions.create(
+            model="llama-3.1-70b-versatile",
+            messages=messages,
+            temperature=1,
+            max_tokens=1024,
+            top_p=1,
+            stream=False,
+            stop=None,
+        )
+        ai_response = completion.choices[0].message.content
+        print("Received AI response:", ai_response)  # Debugging line
+        return ai_response
+    except Exception as e:
+        print("Error in generating AI response:", str(e))  # Debugging line
+        return "Sorry, I couldn't process your request."
 
 def record_to_sheet(date, time, agent_name, transcript, assessment):
     sheet = sheets_service.spreadsheets()
@@ -98,6 +105,7 @@ def chat():
         messages.append({"role": "system", "content": system_message})
 
     user_message = request.json['message']
+    print("User message received:", user_message)  # Debugging line
     messages.append({"role": "user", "content": user_message})
     
     ai_response = get_ai_response(messages)
