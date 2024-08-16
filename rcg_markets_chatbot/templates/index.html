@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,6 +99,7 @@
     </div>
 
     <script>
+        // Function to send a message
         function sendMessage() {
             var userInput = $('#user-input').val();
             if (userInput.trim() === '') return;
@@ -119,6 +119,7 @@
             });
         }
 
+        // Allow sending message by pressing Enter
         $('#user-input').keypress(function(e) {
             if (e.which == 13) {
                 sendMessage();
@@ -126,18 +127,22 @@
             }
         });
 
+        // Retry the last message (functionality to be implemented)
         function retryLastMessage() {
-            // Implement retry functionality
+            // Implement retry functionality here
         }
 
+        // Undo the last message (functionality to be implemented)
         function undoLastMessage() {
-            // Implement undo functionality
+            // Implement undo functionality here
         }
 
+        // Clear the chat box
         function clearChat() {
             $('#chat-box').empty();
         }
 
+        // Fill the input with example text
         function useExample(element) {
             $('#user-input').val($(element).text());
         }
